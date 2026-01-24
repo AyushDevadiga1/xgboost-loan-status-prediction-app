@@ -17,6 +17,6 @@ def load_pipeline():
     return pipeline
 
 def main():
-    pass
+    load_pipeline()
 
-x = load_pipeline()
+main()

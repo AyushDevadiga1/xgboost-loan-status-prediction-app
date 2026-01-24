@@ -1,13 +1,16 @@
 # NOTE : Make sure the requirements version on both the place where the model was trained and this app is same.
 
 # Prediction Engine
-pandas
 numpy
-scikit-learn
-xgboost
 joblib
+pandas==3.0.0
+scikit-learn==1.8.0
+xgboost==3.1.3
 
 # Visualization & Reporting
 matplotlib
 seaborn
 plotly
+
+# UI Framework
+streamlit
