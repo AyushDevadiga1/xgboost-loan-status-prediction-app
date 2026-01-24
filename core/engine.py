@@ -6,7 +6,7 @@ def load_data(X):
 
 def load_pipeline():
     
-    MODEL_PATH = Path("./models/xgb_loan_pipeline.pkl")
+    MODEL_PATH = Path("./models/xgb_loan_pipeline_v1.pkl")
     pipeline = None
     try:
         pipeline = joblib.load(MODEL_PATH)
