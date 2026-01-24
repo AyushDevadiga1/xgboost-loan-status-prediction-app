@@ -1,0 +1,11 @@
+# Prediction Engine
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+
+# Visualization & Reporting
+matplotlib
+seaborn
+plotly
