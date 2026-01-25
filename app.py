@@ -15,7 +15,7 @@ def main():
     # Keep this always at the top
     # This is just the page metadata
     st.set_page_config(
-                        page_title="Loan Data Prediction",
+                        page_title="Loan Eligibility Prediction",
                         page_icon="💸", 
                         layout="wide", 
                         initial_sidebar_state="expanded",
