@@ -48,31 +48,69 @@ Remove the padding at the top of the page */
 }
 
 .prediction-card {
-    padding: 20px;
-    border-radius: 15px;
+    padding: 30px;
+    border-radius: 10px;
     text-align: center;
-    transition: all 0.5s ease-in-out;
-    animation: pulse-glow 2s infinite; /* Keeps it feeling "live" */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
 }
 
+/* Option 5: Cyan vs Magenta (Complementary) */
 .status-accepted {
-    background: rgba(224, 247, 250, 0.8);
-    color: #006064;
-    border: 1px solid #00acc1;
-    border-top: 5px solid #00acc1; /* Top accent looks cool too */
+    background: linear-gradient(125deg, rgba(0, 188, 212, 0.12) 0%, rgba(0, 172, 193, 0.05) 100%);
+    color: #ffffff;
+    border: 2px solid #00BCD4;
+    border-left: 6px solid #00ACC1;
+    box-shadow: 0 4px 20px rgba(0, 188, 212, 0.2);
 }
 
 .status-rejected {
-    background: rgba(232, 234, 246, 0.8);
-    color: #1a237e;
-    border: 1px solid #3f51b5;
-    border-top: 5px solid #3f51b5;
-    animation: none; /* No pulse for rejection to keep it "heavy" */
+    background: linear-gradient(135deg, rgba(233, 30, 99, 0.12) 0%, rgba(216, 27, 96, 0.05) 100%);
+    color: #ffffff;
+    border: 2px solid #E91E63;
+    border-left: 6px solid #D81B60;
+    box-shadow: 0 4px 20px rgba(233, 30, 99, 0.2);
+}
+
+/* Subtle professional hover */
+.prediction-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Top accent line */
+.status-accepted::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00acc1, transparent);
+    border-radius: 10px 10px 0 0;
+}
+
+.status-rejected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #b53f6c, transparent);
+    border-radius: 10px 10px 0 0;
+}
+
+/* Make sure position relative is set */
+.prediction-card {
+    position: relative;
 }
 
 .data-feed {
-    background-color: #1a1a2e; /* Deep dark blue */
-    color: #0157b9;           /* Neon cyan text */
+    background-color: #1a1a2e;
+    color: #0157b9;           
     padding: 15px;
     border-radius: 8px;
     font-family: 'Courier New', Courier, monospace;
@@ -86,7 +124,24 @@ Remove the padding at the top of the page */
 
 .stExpander {
     border: 1px solid #0c3251 !important;
-    background-color: #343a42 !important;
+    background-color: #202327 !important;
 }
 
 
+/* Remove all Streamlit branding */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+
+/* Keep header but hide menu button */
+header[data-testid="stHeader"] {
+    background-color: transparent;
+}
+
+button[kind="header"] {
+    display: none;
+}
+
+/* Remove "Deploy" button */
+.stDeployButton {
+    display: none;
+}

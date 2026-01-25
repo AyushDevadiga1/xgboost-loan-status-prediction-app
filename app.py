@@ -16,9 +16,14 @@ def main():
     # This is just the page metadata
     st.set_page_config(
                         page_title="Loan Data Prediction",
-                        page_icon="random", 
+                        page_icon="💸", 
                         layout="wide", 
-                        initial_sidebar_state="auto"
+                        initial_sidebar_state="expanded",
+                        menu_items={
+                                        'Get Help': None,
+                                        'Report a bug': None,
+                                        'About': None
+                                    }
                     )
 
     # To modify the inbuilt streamlit style we inject a markdown at the base and use it to control other elements
@@ -31,15 +36,27 @@ def main():
     css_path = os.path.join(base_path,"assets", "styles.css")
     local_css(css_path)
 
-    def preprocess_data(X):
-        # Load the dataset into a single row
-        df = pd.DataFrame([X])
-        # Load the Pipeline/Model from the load_pipeline() which is imported above 
-        model_pipe = load_pipeline()
+    # We load the model once and it gets cached so we will load the model only once , reducing the website load.
 
-        prediction = model_pipe.predict(df)
-        prediction_proba = model_pipe.predict_proba(df)
-        return prediction,prediction_proba
+    @st.cache_resource # <------- Caches resources
+    def load_model():
+        return load_pipeline()
+
+
+    def preprocess_data(X):
+        try:
+            # Load the dataset into a single row
+            df = pd.DataFrame([X])
+            # Load the Pipeline/Model from the load_pipeline() which is imported above 
+            model_pipe = load_model()
+
+            prediction = model_pipe.predict(df)
+            prediction_proba = model_pipe.predict_proba(df)
+            return prediction,prediction_proba
+        
+        except Exception as e:
+            st.error(f'The prediction failed : {e}')
+            return None ,None
         
 
     def left_sidebar():
@@ -182,81 +199,82 @@ def main():
 
             with col1:
 
-                    st.write('<h3> Prediction : ',unsafe_allow_html=True)
-
-                    prediction,prediction_proba = preprocess_data(user_data)
-
+                    st.write('<h3> Prediction : </h3> ',unsafe_allow_html=True)
 
                     if toggled_button:
                         prediction, prediction_proba = preprocess_data(user_data)
                         
                         # Probabilities
-                        prob_val = prediction_proba[0][1] if prediction == 1 else prediction_proba[0][0]
+                        if prediction is not None and prediction_proba is not None:
 
-                        if prediction == 1:
-                            st.markdown(f'''
-                                <div class="prediction-card status-accepted">
-                                    <span style="font-size: 0.8em; text-transform: uppercase; opacity: 0.7;">System Verdict</span><br>
-                                    <b style="font-size: 1.5em;">LOAN APPROVED</b><br>
-                                </div>
-                            ''', unsafe_allow_html=True)
+                            prob_val = prediction_proba[0][1] if prediction == 1 else prediction_proba[0][0]
+
+                            if prediction == 1:
+                                st.markdown(f'''
+                                    <div class="prediction-card status-accepted">
+                                        <span style="font-size: 0.8em; text-transform: uppercase; opacity: 0.7;">System Verdict</span><br>
+                                        <b style="font-size: 1.5em;">LOAN APPROVED</b><br>
+                                    </div>
+                                ''', unsafe_allow_html=True)
+                            else:
+                                st.markdown(f'''
+                                    <div class="prediction-card status-rejected">
+                                        <span style="font-size: 0.8em; text-transform: uppercase; opacity: 0.7;">System Verdict</span><br>
+                                        <b style="font-size: 1.5em;">LOAN REJECTED</b><br>
+    
+                                    </div>
+                                ''', unsafe_allow_html=True)
+
+
+                        # Professional Display using Columns and Progress Bars
+                            col3, col4 = st.columns(2)
+
+                            with col3:
+                                prob_success = float(prediction_proba[0][1])
+                                st.write("### Success Probability")
+                                st.title(f"{prob_success:.1%}")
+                                st.progress(prob_success)
+
+                            with col4:
+                                prob_failure = float(prediction_proba[0][0])
+                                st.write("### Failure Probability")
+                                st.title(f"{prob_failure:.1%}")
+                                # Using a red progress bar logic via color or standard
+                                st.progress(prob_failure)
+
+                            st.markdown("<h2>Model Performace Metrics</h2>",unsafe_allow_html=True)
+
+                            # Classification Report in its own expander
+                            with st.expander(" Classification Report ", expanded=False):
+                                st.markdown("_Detailed metrics showing how well the model performs on each class (Approved vs Rejected)._")
+                                report_data = {
+                                    "Class": ["0 (Rejected)", "1 (Approved)", "Accuracy", "Macro Avg", "Weighted Avg"],
+                                    "Precision": [0.95, 0.85, None, 0.90, 0.93],
+                                    "Recall": [0.96, 0.84, None, 0.90, 0.93],
+                                    "F1-Score": [0.96, 0.84, 0.93, 0.90, 0.93], 
+                                    "Support": [6990, 2010, 9000, 9000, 9000]
+                                }
+                                
+                                df_report = pd.DataFrame(report_data)
+                                st.table(df_report)
+
+                            # Confusion Matrix in its own expander
+                            with st.expander("Confusion Matrix", expanded=False):
+                                img_path = os.path.join(os.path.dirname(__file__), "assets", "conf_1.png")
+                                if os.path.exists(img_path):
+                                    st.markdown("_Visual breakdown of correct vs incorrect predictions made by the model._")
+                                    st.image(img_path, use_container_width=True, caption="Visualizing Model Accuracy")
+                                else:
+                                    st.warning("Confusion Matrix image not found in assets folder.")
+
                         else:
-                            st.markdown(f'''
-                                <div class="prediction-card status-rejected">
-                                    <span style="font-size: 0.8em; text-transform: uppercase; opacity: 0.7;">System Verdict</span><br>
-                                    <b style="font-size: 1.5em;">LOAN REJECTED</b><br>
- 
-                                </div>
-                            ''', unsafe_allow_html=True)
-
-
-
-                    prob_success = float(prediction_proba[0][1]) 
-                    prob_failure = float(prediction_proba[0][0])
-
-                    # Professional Display using Columns and Progress Bars
-                    col3, col4 = st.columns(2)
-
-                    with col3:
-                        st.write("### Success Probability")
-                        st.title(f"{prob_success:.1%}")
-                        st.progress(prob_success)
-
-                    with col4:
-                        st.write("### Failure Probability")
-                        st.title(f"{prob_failure:.1%}")
-                        # Using a red progress bar logic via color or standard
-                        st.progress(prob_failure)
-
-                    with st.container():
-
-                        # Formatting the raw report into a structured dictionary
-                        report_data = {
-                            "Class": ["0 (Rejected)", "1 (Approved)", "Accuracy", "Macro Avg", "Weighted Avg"],
-                            "Precision": [0.95, 0.85, None, 0.90, 0.93],
-                            "Recall": [0.96, 0.84, None, 0.90, 0.93],
-                            "F1-Score": [0.96, 0.84, 0.93, 0.90, 0.93],
-                            "Support": [6990, 2010, 9000, 9000, 9000]
-                        }
-
-                        df_report = pd.DataFrame(report_data)
-
-                        # Displaying in Streamlit
-                        st.subheader("Model Classification Report")
-                        st.table(df_report)
-
-                        st.subheader("Model Confusion Matrix")
-                        img_path = os.path.join(os.path.dirname(__file__), "assets", "conf_1.png")
-                        if os.path.exists(img_path):
-                            st.image(img_path, use_container_width=True,width=500,caption="Visualizing Model Accuracy")
-                        else:
-                            # Fallback if image isn't found
-                            st.warning("Confusion Matrix image not found in assets folder.")
+                                st.warning("Unable to generate prediction. Please check your inputs.")
 
             with col2:
-                if(user_data):
-                    st.write('<h5>User Input :',unsafe_allow_html=True)
-                    st.json(user_data)
+                    if(user_data):
+                        st.write('<h5>User Input :',unsafe_allow_html=True)
+                        st.json(user_data)
+
 
         else:
 
