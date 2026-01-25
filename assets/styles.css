@@ -1,0 +1,64 @@
+/* Remove the padding at the top of the page */
+.block-container {
+    padding-top: 2rem !important;
+}
+/* header {visibility: hidden;}
+Remove the padding at the top of the page */
+.block-container {
+    padding-top: 2rem !important;
+}
+
+.loan-banner-strip {
+    background-color: #08002f; /* Bright yellow */
+    color: #ffffff;
+    padding: 25px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: Italic;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 5px rgba(240, 240, 240, 0.1);
+}
+
+[data-testid="stSidebar"] {
+    background-color: #110534;
+    min-width: 200px;
+}
+
+/*
+
+[data-testid="sidebar-button"] {
+    display: none !important;
+} 
+
+*/
+
+/*
+[data-testid="stJson"] {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    background-color: #08002f !important;
+    border: 2.5px solid #fcfdff !important;
+    border-radius: 10px;
+}
+
+[data-testid="stJson"] .react-json-view {
+    background-color: transparent !important;
+}
+
+
+[data-testid="stJson"] .object-key {
+    color: #ffffff !important; 
+    opacity: 1 !important;
+}
+
+
+[data-testid="stJson"] .variable-value > div {
+    color: #00ffcc !important; 
+}
+
+
+[data-testid="stJson"] .object-key-val span, 
+[data-testid="stJson"] .brace-row {
+    color: #ffffff !important;
+} 
+
+*/

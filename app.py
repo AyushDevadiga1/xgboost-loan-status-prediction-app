@@ -1,5 +1,6 @@
 import streamlit as st
 import joblib
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,18 +11,43 @@ import plotly.express as px
 
 # The main function
 def main():
+
+    # Keep this always at the top
+    # This is just the page metadata
+    st.set_page_config(
+                        page_title="Loan Data Prediction",
+                        page_icon="random", 
+                        layout="wide", 
+                        initial_sidebar_state="auto"
+                    )
+
+
+    def local_css(file_name):
+        with open(file_name) as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+    # Path to your assets folder
+    base_path = os.path.dirname(__file__)
+    css_path = os.path.join(base_path,"assets", "styles.css")
+    local_css(css_path)
+
     
+
     def left_sidebar():
        
        input_dict = {}
 
        x = st.sidebar
-       x.header('Want some cash ? ')
-       check_box_value = x.toggle('Are you ready')
+       x.header('Enter User Details')
+       check_box_value = x.toggle('Toggle to Fill Form ')
+    #    check_box_value_1 = x.toggle('For Bulk DATA')
+
+    #    if check_box_value_1:
+    #        x.markdown('Got Some files ???')
 
        if check_box_value:
         
-        x.markdown('<i> Okay ! Hold up... 💵💸💰💲 !!!</i>',unsafe_allow_html=True)
+        x.markdown('<i> Please Fill the Details Below </i>',unsafe_allow_html=True)
 
         input_dict['gender'] = x.radio(
             label = 'Gender' ,
@@ -58,7 +84,8 @@ def main():
 
         input_dict['person_home_ownership'] = x.segmented_control(
             label = 'House Ownership' ,
-            options = ['OWN','RENT','MORTGAGE','OTHER'] 
+            options = ['OWN','RENT','MORTGAGE','OTHER'] ,
+            default = 'OWN'
         )
 
         input_dict['loan_amnt'] = x.number_input(
@@ -84,19 +111,8 @@ def main():
 
         return input_dict
         
-        
-    # This is just the page metadata
-    st.set_page_config(
-                        page_title="Loan Data Prediction",
-                        page_icon="random", 
-                        layout="wide", 
-                        initial_sidebar_state="expanded"
-                    )
-
-
-
-    # st.title(" Loan Approval : Yes or No 😪",text_alignment='center')
-    # st.write('Hello')
+    
+    # st.markdown('<div class="loan-banner-strip">Youkoso !!!</div>', unsafe_allow_html=True)
     
     user_data = left_sidebar()
 
@@ -111,15 +127,18 @@ def main():
         col1,col2 = st.columns([4,1])
 
         with col1:
-            st.write('<h4>Prediction<h4>',unsafe_allow_html=True)
+            st.write('<h4>Input Data',unsafe_allow_html=True)
 
-            df = pd.DataFrame(user_data,index=[0])
-            st.dataframe(df)
+            if(user_data):
+                df = pd.DataFrame.from_dict(user_data, orient='index', columns=['Value'])
+                st.dataframe(df)
             
 
         with col2:
-            st.write('<h5>User Input : <h5>',unsafe_allow_html=True)
-            st.write(user_data)
+            st.write('<h5>User Input :',unsafe_allow_html=True)
+
+            if(user_data):
+                st.write(user_data)
 
     # with st.container():
     #    st.markdown('<h3> The Dataset : </h3>',unsafe_allow_html=True)
