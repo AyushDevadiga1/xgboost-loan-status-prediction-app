@@ -31,8 +31,15 @@ Remove the padding at the top of the page */
     min-width: 200px;
 }
 
+
+[data-testid="stSidebar"] label {
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
 /* Base style for the result card */
-/* Base style for the card */
 /* Animation for when the value changes */
 @keyframes pulse-glow {
     0% { box-shadow: 0 0 5px rgba(0, 172, 193, 0.2); }

@@ -276,10 +276,11 @@ def main():
     #### Getting Started
     To see the predictor in action, use the sidebar to toggle the input form. You can adjust the values to see how different scenarios—like increasing your income or improving your credit score—affect the final decision. 
 
-    The results you see initially are based on placeholder values. Update them to reflect your specific data for a real-time prediction.
+    For more information refer to the [GitHub Repository](https://github.com/AyushDevadiga1/xgboost-loan-status-prediction-app).
     """)
 
-            st.divider()
+
+            st.divider()    
 
     # with st.container():
     #    st.markdown('<h3> The Dataset : </h3>',unsafe_allow_html=True)
