@@ -24,6 +24,32 @@ Remove the padding at the top of the page */
     min-width: 200px;
 }
 
+/* Base style for the result card */
+.prediction-card {
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border: 2px solid transparent;
+}
+
+/* Specific styles for success/fail */
+.status-accepted {
+    background-color: #d1fae5; /* Soft Green */
+    color: #065f46;
+    border-color: #10b981;
+}
+
+.status-rejected {
+    background-color: #fee2e2; /* Soft Red */
+    color: #991b1b;
+    border-color: #ef4444;
+}
+
+
 /*
 
 [data-testid="sidebar-button"] {

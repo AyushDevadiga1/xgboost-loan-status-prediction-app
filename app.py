@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
-
+from core.engine import load_pipeline
 # https://www.kaggle.com/datasets/taweilo/loan-approval-classification-data
 
 # The main function
@@ -21,7 +21,7 @@ def main():
                         initial_sidebar_state="auto"
                     )
 
-
+    # To modify the inbuilt streamlit style we inject a markdown at the base and use it to control other elements
     def local_css(file_name):
         with open(file_name) as f:
             st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
@@ -31,7 +31,16 @@ def main():
     css_path = os.path.join(base_path,"assets", "styles.css")
     local_css(css_path)
 
-    
+    def preprocess_data(X):
+        # Load the dataset into a single row
+        df = pd.DataFrame([X])
+        # Load the Pipeline/Model from the load_pipeline() which is imported above 
+        model_pipe = load_pipeline()
+
+        prediction = model_pipe.predict(df)
+
+        return prediction
+        
 
     def left_sidebar():
        
@@ -49,7 +58,7 @@ def main():
         
         x.markdown('<i> Please Fill the Details Below </i>',unsafe_allow_html=True)
 
-        input_dict['gender'] = x.radio(
+        input_dict['person_gender'] = x.radio(
             label = 'Gender' ,
             options = ['male','female'] 
         )
@@ -61,7 +70,7 @@ def main():
             value = 18
         )
 
-        input_dict['education'] = x.selectbox(
+        input_dict['person_education'] = x.selectbox(
             label = 'Qualification' ,
             options = ['High School','Bachelor','Associate','Master','Doctorate'] , 
             accept_new_options  = False 
@@ -89,7 +98,7 @@ def main():
         )
 
         input_dict['loan_amnt'] = x.number_input(
-            label = 'Income' ,
+            label = 'Loan Amount' ,
             min_value = 0, 
             max_value = 50000 , 
             value = 2500
@@ -109,7 +118,7 @@ def main():
             value = 5.0
         )
 
-        input_dict['loan_person_income'] = x.slider(
+        input_dict['loan_percent_income'] = x.slider(
             label = 'Loan Percent Income',
             min_value = 0.0, 
             max_value = 1.0 , 
@@ -121,7 +130,7 @@ def main():
             label = 'Credit Bureau Person Credit History Length' ,
             min_value = 1, 
             max_value = 50, 
-            value = 0 , 
+            value = 1 , 
             step = 1
         )
 
@@ -137,12 +146,12 @@ def main():
             options = ['No','Yes'] 
         )
 
-        return input_dict
+       return input_dict,check_box_value
             
     
     # st.markdown('<div class="loan-banner-strip">Youkoso !!!</div>', unsafe_allow_html=True)
     
-    user_data = left_sidebar()
+    user_data,toggled_button = left_sidebar()
 
     # Streamlit already comes with a container called st.container() and to write inside it we will use the with prefix
 
@@ -150,18 +159,32 @@ def main():
         st.title('Loan App Predictor')
         st.write('Want some money ? Try checking this out ' \
         'This is a simple application which on given features gives prediction on whether a user deserves loan or not .' \
-        ' The model used in behind scenes is XGBoostClassifier and was trained on some previous loan dataset .')
+        ' The model used in behind scenes is XGBoostClassifier and was trained on some previous loan dataset.The by default ' \
+        'prediction is of the placeholders value change value dynamically to get more insights.')
 
         col1,col2 = st.columns([4,1])
 
         with col1:
-            st.write('<h4>Input Data',unsafe_allow_html=True)
-
-            if(user_data):
-                df = pd.DataFrame.from_dict(user_data, orient='index', columns=['Value'])
-                st.dataframe(df)
+            st.write('<h3> Prediction : ',unsafe_allow_html=True)
             
+            if toggled_button:
 
+                prediction = preprocess_data(user_data)
+
+                # prediction = 1
+
+                # if toggled_button:
+                #     if prediction == 1:
+                #         st.markdown('<div class="prediction-card status-accepted">LOAN APPROVED ✅</div>', unsafe_allow_html=True)
+                #     else:
+                #         st.markdown('<div class="prediction-card status-rejected">LOAN REJECTED ❌</div>', unsafe_allow_html=True)
+
+                st.write(prediction)
+            
+            else:
+                st.write('Toggle for results')
+
+            
         with col2:
             st.write('<h5>User Input :',unsafe_allow_html=True)
 
