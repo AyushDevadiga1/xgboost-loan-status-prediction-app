@@ -161,12 +161,22 @@ def main():
 
         if toggled_button:
 
-            st.info("""
-                    💡 **Important Information:**
-                    * The results shown initially are based on default placeholder values.
-                    * Please update the details in the sidebar to see how your specific profile affects the prediction.
+            with st.expander("👋 New here? Here is how it works", expanded=False):
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.markdown("""
+                        **Quick Start Guide:**
+                        1. **Enable Input:** Toggle 'Fill Form' in the sidebar.
+                        2. **Adjust Features:** Change sliders/inputs to match your profile.
+                        3. **Live Results:** Watch the prediction update instantly.
                     """)
-
+                with col_b:
+                    st.markdown("""
+                        **Technical Note:**
+                        * **Stability:** Default values prevent errors on startup.
+                        * **Inference:** Data is sent to **XGBoost** in real-time.
+                        * **Goal:** Explore how features impact your loan status.
+                    """)
 
             col1,col2 = st.columns([4,1])
 

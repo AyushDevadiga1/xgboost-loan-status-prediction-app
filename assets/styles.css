@@ -65,16 +65,21 @@ Remove the padding at the top of the page */
 
 .data-feed {
     background-color: #1a1a2e; /* Deep dark blue */
-    color: #00d2ff;           /* Neon cyan text */
+    color: #0157b9;           /* Neon cyan text */
     padding: 15px;
     border-radius: 8px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 13px;
-    border: 1px solid #00d2ff;
+    border: 1px solid #003785;
     box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
     max-height: 400px;        /* Keeps it minimalistic */
     overflow-y: auto;         /* Scrollable if needed */
     white-space: pre-wrap;    /* Wraps text nicely */
+}
+
+.stExpander {
+    border: 1px solid #0c3251 !important;
+    background-color: #343a42 !important;
 }
 
 
