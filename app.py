@@ -38,8 +38,8 @@ def main():
         model_pipe = load_pipeline()
 
         prediction = model_pipe.predict(df)
-
-        return prediction
+        prediction_proba = model_pipe.predict_proba(df)
+        return prediction,prediction_proba
         
 
     def left_sidebar():
@@ -156,40 +156,73 @@ def main():
     # Streamlit already comes with a container called st.container() and to write inside it we will use the with prefix
 
     with st.container():
-        st.title('Loan App Predictor')
-        st.write('Want some money ? Try checking this out ' \
-        'This is a simple application which on given features gives prediction on whether a user deserves loan or not .' \
-        ' The model used in behind scenes is XGBoostClassifier and was trained on some previous loan dataset.The by default ' \
-        'prediction is of the placeholders value change value dynamically to get more insights.')
 
-        col1,col2 = st.columns([4,1])
+        st.title('Loan Prediction App on User Data')
 
-        with col1:
-            st.write('<h3> Prediction : ',unsafe_allow_html=True)
-            
-            if toggled_button:
+        if toggled_button:
 
-                prediction = preprocess_data(user_data)
+            col1,col2 = st.columns([4,1])
 
-                # prediction = 1
+            with col1:
 
-                # if toggled_button:
-                #     if prediction == 1:
-                #         st.markdown('<div class="prediction-card status-accepted">LOAN APPROVED ✅</div>', unsafe_allow_html=True)
-                #     else:
-                #         st.markdown('<div class="prediction-card status-rejected">LOAN REJECTED ❌</div>', unsafe_allow_html=True)
+                    st.write('<h3> Prediction : ',unsafe_allow_html=True)
 
-                st.write(prediction)
-            
-            else:
-                st.write('Toggle for results')
+                    prediction,prediction_proba = preprocess_data(user_data)
 
-            
-        with col2:
-            st.write('<h5>User Input :',unsafe_allow_html=True)
+                    # prediction = 1
 
-            if(user_data):
-                st.write(user_data)
+                    # if toggled_button:
+                    #     if prediction == 1:
+                    #         st.markdown('<div class="prediction-card status-accepted">LOAN APPROVED ✅</div>', unsafe_allow_html=True)
+                    #     else:
+                    #         st.markdown('<div class="prediction-card status-rejected">LOAN REJECTED ❌</div>', unsafe_allow_html=True)
+
+                    st.write(prediction)
+
+                    prob_success = float(prediction_proba[0][1]) 
+                    prob_failure = float(prediction_proba[0][0])
+
+                    # Professional Display using Columns and Progress Bars
+                    col3, col4 = st.columns(2)
+
+                    with col3:
+                        st.write("### Success Probability")
+                        st.title(f"{prob_success:.1%}")
+                        st.progress(prob_success)
+
+                    with col4:
+                        st.write("### Failure Probability")
+                        st.title(f"{prob_failure:.1%}")
+                        # Using a red progress bar logic via color or standard
+                        st.progress(prob_failure)
+
+            with col2:
+                if(user_data):
+                    st.write('<h5>User Input :',unsafe_allow_html=True)
+                    st.json(user_data)
+
+        else:
+
+            st.markdown("""
+    ### Can you get the loan you're looking for?
+    
+    This application is designed to give you an immediate prediction on loan eligibility. Instead of a manual review process, we use a machine learning model to evaluate financial profiles and determine whether a loan is likely to be approved or rejected.
+
+    #### The Data and Intelligence
+    The logic behind this app is based on the **Loan Approval Classification dataset**. We trained an **XGBoost Classifier** on thousands of historical records to identify the specific patterns that lead to successful applications. 
+
+    The model considers several key factors:
+    *   **Financial Background:** Your annual income and employment experience.
+    *   **Credit History:** Your past credit score and any history of default.
+    *   **Loan Specifics:** The amount you are requesting and the intended purpose of the funds.
+
+    #### Getting Started
+    To see the predictor in action, use the sidebar to toggle the input form. You can adjust the values to see how different scenarios—like increasing your income or improving your credit score—affect the final decision. 
+
+    The results you see initially are based on placeholder values. Update them to reflect your specific data for a real-time prediction.
+    """)
+
+            st.divider()
 
     # with st.container():
     #    st.markdown('<h3> The Dataset : </h3>',unsafe_allow_html=True)
