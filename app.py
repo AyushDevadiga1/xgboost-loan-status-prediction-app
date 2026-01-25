@@ -17,7 +17,7 @@ def main():
 
        x = st.sidebar
        x.header('Want some cash ? ')
-       check_box_value = x.checkbox('Are you ready')
+       check_box_value = x.toggle('Are you ready')
 
        if check_box_value:
         
@@ -56,10 +56,9 @@ def main():
             step = 1
         )
 
-        input_dict['person_home_ownership'] = x.selectbox(
+        input_dict['person_home_ownership'] = x.segmented_control(
             label = 'House Ownership' ,
-            options = ['OWN','RENT','MORTGAGE','OTHER'] , 
-            accept_new_options  = False 
+            options = ['OWN','RENT','MORTGAGE','OTHER'] 
         )
 
         input_dict['loan_amnt'] = x.number_input(
@@ -67,6 +66,20 @@ def main():
             min_value = 0, 
             max_value = 50000 , 
             value = 2500
+        )
+
+        input_dict['loan_intent'] = x.selectbox(
+            label = 'Loan Intention' ,
+            options = ["PERSONAL", "EDUCATION", "MEDICAL", "VENTURE", "HOMEIMPROVEMENT", "DEBTCONSOLIDATION"] , 
+            accept_new_options  = False 
+        )
+
+        input_dict['loan_int_rate'] = x.number_input(
+            label = 'Interest Rate' ,
+            min_value = 5.0, 
+            max_value = 25.0 , 
+            format = '%.02f',
+            value = 5.0
         )
 
         return input_dict
@@ -99,6 +112,9 @@ def main():
 
         with col1:
             st.write('<h4>Prediction<h4>',unsafe_allow_html=True)
+
+            df = pd.DataFrame(user_data,index=[0])
+            st.dataframe(df)
             
 
         with col2:
