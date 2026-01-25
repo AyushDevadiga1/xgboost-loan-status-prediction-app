@@ -75,7 +75,7 @@ def main():
         )
 
         input_dict['person_emp_exp'] = x.slider(
-            label = 'Experienced' ,
+            label = 'Employment Experience Years' ,
             min_value = 0, 
             max_value = 100, 
             value = 0 , 
@@ -102,15 +102,43 @@ def main():
         )
 
         input_dict['loan_int_rate'] = x.number_input(
-            label = 'Interest Rate' ,
+            label = 'Loan Interest Rate' ,
             min_value = 5.0, 
             max_value = 25.0 , 
             format = '%.02f',
             value = 5.0
         )
 
-        return input_dict
+        input_dict['loan_person_income'] = x.slider(
+            label = 'Loan Percent Income',
+            min_value = 0.0, 
+            max_value = 1.0 , 
+            step = 0.01,
+            value = 0.0
+        )
         
+        input_dict['cb_person_cred_hist_length'] = x.slider(
+            label = 'Credit Bureau Person Credit History Length' ,
+            min_value = 1, 
+            max_value = 50, 
+            value = 0 , 
+            step = 1
+        )
+
+        input_dict['credit_score'] = x.number_input(
+            label = 'Credit Score',
+            min_value = 250, 
+            max_value = 1000,
+            value = 300
+        )
+
+        input_dict['previous_loan_defaults_on_file'] = x.radio(
+            label = 'Have you defaulted on a loan before?' ,
+            options = ['No','Yes'] 
+        )
+
+        return input_dict
+            
     
     # st.markdown('<div class="loan-banner-strip">Youkoso !!!</div>', unsafe_allow_html=True)
     
