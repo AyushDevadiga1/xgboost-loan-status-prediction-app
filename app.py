@@ -157,9 +157,16 @@ def main():
 
     with st.container():
 
-        st.title('Loan Prediction App on User Data')
+        st.title('Loan Approval Prediction from User Data')
 
         if toggled_button:
+
+            st.info("""
+                    💡 **Important Information:**
+                    * The results shown initially are based on default placeholder values.
+                    * Please update the details in the sidebar to see how your specific profile affects the prediction.
+                    """)
+
 
             col1,col2 = st.columns([4,1])
 
@@ -169,15 +176,30 @@ def main():
 
                     prediction,prediction_proba = preprocess_data(user_data)
 
-                    # prediction = 1
 
-                    # if toggled_button:
-                    #     if prediction == 1:
-                    #         st.markdown('<div class="prediction-card status-accepted">LOAN APPROVED ✅</div>', unsafe_allow_html=True)
-                    #     else:
-                    #         st.markdown('<div class="prediction-card status-rejected">LOAN REJECTED ❌</div>', unsafe_allow_html=True)
+                    if toggled_button:
+                        prediction, prediction_proba = preprocess_data(user_data)
+                        
+                        # Probabilities
+                        prob_val = prediction_proba[0][1] if prediction == 1 else prediction_proba[0][0]
 
-                    st.write(prediction)
+                        if prediction == 1:
+                            st.markdown(f'''
+                                <div class="prediction-card status-accepted">
+                                    <span style="font-size: 0.8em; text-transform: uppercase; opacity: 0.7;">System Verdict</span><br>
+                                    <b style="font-size: 1.5em;">LOAN APPROVED</b><br>
+                                </div>
+                            ''', unsafe_allow_html=True)
+                        else:
+                            st.markdown(f'''
+                                <div class="prediction-card status-rejected">
+                                    <span style="font-size: 0.8em; text-transform: uppercase; opacity: 0.7;">System Verdict</span><br>
+                                    <b style="font-size: 1.5em;">LOAN REJECTED</b><br>
+ 
+                                </div>
+                            ''', unsafe_allow_html=True)
+
+
 
                     prob_success = float(prediction_proba[0][1]) 
                     prob_failure = float(prediction_proba[0][0])
@@ -195,6 +217,31 @@ def main():
                         st.title(f"{prob_failure:.1%}")
                         # Using a red progress bar logic via color or standard
                         st.progress(prob_failure)
+
+                    with st.container():
+
+                        # Formatting the raw report into a structured dictionary
+                        report_data = {
+                            "Class": ["0 (Rejected)", "1 (Approved)", "Accuracy", "Macro Avg", "Weighted Avg"],
+                            "Precision": [0.95, 0.85, None, 0.90, 0.93],
+                            "Recall": [0.96, 0.84, None, 0.90, 0.93],
+                            "F1-Score": [0.96, 0.84, 0.93, 0.90, 0.93],
+                            "Support": [6990, 2010, 9000, 9000, 9000]
+                        }
+
+                        df_report = pd.DataFrame(report_data)
+
+                        # Displaying in Streamlit
+                        st.subheader("Model Classification Report")
+                        st.table(df_report)
+
+                        st.subheader("Model Confusion Matrix")
+                        img_path = os.path.join(os.path.dirname(__file__), "assets", "conf_1.png")
+                        if os.path.exists(img_path):
+                            st.image(img_path, use_container_width=True,width=500,caption="Visualizing Model Accuracy")
+                        else:
+                            # Fallback if image isn't found
+                            st.warning("Confusion Matrix image not found in assets folder.")
 
             with col2:
                 if(user_data):
