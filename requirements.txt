@@ -1,14 +1,8 @@
-# Prediction Engine
-numpy
-joblib
+streamlit
 pandas<3.0.0
-scikit-learn>=1.2.0
-xgboost>=2.0.0
-
-# Visualization & Reporting
+numpy
+scikit-learn
+xgboost
 matplotlib
 seaborn
-plotly
-
-# UI Framework
-streamlit
+joblib
