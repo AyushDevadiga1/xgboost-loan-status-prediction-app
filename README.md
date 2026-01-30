@@ -1,51 +1,51 @@
-# 💸 Loan Eligibility Prediction App
+# Loan Eligibility Prediction App
 
-A powerful Streamlit Application leveraging an **XGBoost** machine learning model to predict loan approval status in real-time. This application allows users to input financial and personal details to receive an immediate assessment of their loan eligibility, complete with probability scores and visual insights.
+This project is a Streamlit-based web application that leverages an **XGBoost** machine learning model to predict loan approval status in real-time. The application provides an interface for users to input financial and personal details, generating an immediate assessment of loan eligibility along with probability scores and visual insights.
 
-🔗 **[Live Demo](https://xgboost-loan-status-prediction-app-dwipwvam92goqcxlmpjpwc.streamlit.app/)**
+**[Live Application Demo](https://xgboost-loan-status-prediction-app-dwipwvam92goqcxlmpjpwc.streamlit.app/)**
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-*   **Interactive Input Form**: Easy-to-use sidebar for entering applicant details (Age, Income, Credit Score, etc.).
-*   **Real-time Prediction**: Instant "Approved" or "Rejected" verdict driven by a pre-trained XGBoost pipeline.
-*   **Probability Analysis**: Visual breakdown of success vs. failure probabilities using progress bars.
-*   **Model Insights**: Access to the model's performance metrics, including a Classification Report and Confusion Matrix.
-*   **Responsive Design**: Clean and professional UI built with custom CSS styling.
+*   **Interactive Input Form**: User-friendly sidebar interface for entering applicant details such as age, income, and credit score.
+*   **Real-time Prediction**: Immediate loan approval or rejection verdict driven by a pre-trained XGBoost prediction pipeline.
+*   **Probability Analysis**: Visual representation of success versus failure probabilities using progress bars.
+*   **Model Insights**: Detailed display of model performance metrics, including a Classification Report and Confusion Matrix.
+*   **Responsive Design**: Professional user interface built with custom CSS styling for optimal user experience.
 
-## 🛠️ Built With
+## Technology Stack
 
-*   **[Streamlit](https://streamlit.io/)** - The frontend framework for data apps.
-*   **[XGBoost](https://xgboost.readthedocs.io/)** - High-performance gradient boosting library for the prediction model.
-*   **[Scikit-Learn](https://scikit-learn.org/)** - For data preprocessing and pipeline management.
-*   **[Pandas](https://pandas.pydata.org/)** & **[NumPy](https://numpy.org/)** - Data manipulation and numerical operations.
-*   **[Plotly](https://plotly.com/)** & **[Seaborn](https://seaborn.pydata.org/)** - Data visualization.
+*   **[Streamlit](https://streamlit.io/)**: Frontend framework for data application development.
+*   **[XGBoost](https://xgboost.readthedocs.io/)**: Gradient boosting library used for the core prediction model.
+*   **[Scikit-Learn](https://scikit-learn.org/)**: Library for data preprocessing and pipeline management.
+*   **[Pandas](https://pandas.pydata.org/)** & **[NumPy](https://numpy.org/)**: Libraries for data manipulation and numerical operations.
+*   **[Plotly](https://plotly.com/)** & **[Seaborn](https://seaborn.pydata.org/)**: Libraries utilized for data visualization.
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 .
 ├── app.py                  # Main application entry point
 ├── requirements.txt        # Python dependencies
 ├── README.md               # Project documentation
-├── assets/                 # CSS styles and images
+├── assets/                 # CSS styles and static assets
 ├── core/                   # Backend logic and utility functions
 │   ├── engine.py           # Model loading logic
 │   └── utils.py          
 ├── models/                 # Serialized model pipelines (.joblib)
-└── dataset/                # Dataset used for training (if applicable)
+└── dataset/                # Dataset used for training
 ```
 
-## 🏁 Getting Started
+## Getting Started
 
-To run this application locally on your machine, follow these steps:
+To run this application locally, please follow the steps below:
 
 ### Prerequisites
 
-Ensure you have Python 3.8 or higher installed.
+Ensure that Python 3.8 or higher is installed on your system.
 
-### Installation
+### Installation Requirements
 
 1.  **Clone the repository**
     ```bash
@@ -67,27 +67,27 @@ Ensure you have Python 3.8 or higher installed.
     pip install -r requirements.txt
     ```
 
-### ▶️ Running the App
+### Running the Application
 
-Execute the following command in your terminal:
+Execute the following command in your terminal to start the Streamlit server:
 
 ```bash
 streamlit run app.py
 ```
 
-The app will open automatically in your default browser at `http://localhost:8501`.
+The application will launch automatically in your default web browser at `http://localhost:8501`.
 
-## 🧠 Model Information
+## Model Methodology
 
-The application uses an **XGBoost Classifier** trained on the [Loan Approval Classification Dataset](https://www.kaggle.com/datasets/taweilo/loan-approval-classification-data). The model evaluates features such as:
-*   Person Age & Income
+The application utilizes an **XGBoost Classifier** trained on the [Loan Approval Classification Dataset](https://www.kaggle.com/datasets/taweilo/loan-approval-classification-data). The model evaluates candidate eligibility based on features such as:
+*   Applicant Age & Annual Income
 *   Employment Experience
 *   Loan Amount & Interest Rate
 *   Credit History Length & Credit Score
-*   Previous Loan Defaults
+*   History of Previous Loan Defaults
 
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/AyushDevadiga1">Ayush Devadiga</a>
+  Developed by <a href="https://github.com/AyushDevadiga1">Ayush Devadiga</a>
 </p>
